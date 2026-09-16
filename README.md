@@ -102,11 +102,13 @@ cd code/deployment && docker compose up -d --build   # Stage 3
 
 ## API
 
-The API runs at http://localhost:8000. Interactive docs at http://localhost:8000/docs.
+The API runs at http://localhost:8000. Swagger ui at http://localhost:8000/docs.
 
 - `GET /health` returns the service status.
-- `POST /predict` accepts an image file (multipart form field `file`), resizes it to 28x28
-  and returns the predicted digit, the confidence and the class probabilities.
+- `POST /predict` accepts an image file with a handwritten digit (multipart form field `file`).
+  The API converts the image to grayscale, inverts it when the background is light, crops the
+  digit and centers it on a 28x28 canvas, then returns the predicted digit, the confidence and
+  the class probabilities.
 
 Example:
 

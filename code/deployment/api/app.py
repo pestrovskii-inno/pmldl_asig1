@@ -48,8 +48,27 @@ def get_model():
 
 
 def preprocess(image):
-    gray = image.convert("L").resize((28, 28))
-    arr = np.asarray(gray, dtype=np.float32) / 255.0
+    gray = image.convert("L")
+    if gray.size == (28, 28):
+        arr = np.asarray(gray, dtype=np.float32)
+        # MNIST digits are bright on a dark background so invert light images
+        if arr.mean() > 127:
+            arr = 255.0 - arr
+        return torch.from_numpy(arr / 255.0).reshape(1, 1, 28, 28)
+    arr = np.asarray(gray, dtype=np.float32)
+    if arr.mean() > 127:
+        arr = 255.0 - arr
+    mask = arr > 30
+    if not mask.any():
+        return torch.zeros(1, 1, 28, 28)
+    rows = np.where(mask.any(axis=1))[0]
+    cols = np.where(mask.any(axis=0))[0]
+    digit = Image.fromarray(arr[rows[0]:rows[-1] + 1, cols[0]:cols[-1] + 1].astype(np.uint8))
+    scale = 20.0 / max(digit.size)
+    box = digit.resize((max(1, int(digit.width * scale)), max(1, int(digit.height * scale))), Image.Resampling.LANCZOS)
+    canvas = Image.new("L", (28, 28), 0)
+    canvas.paste(box, ((28 - box.width) // 2, (28 - box.height) // 2))
+    arr = np.asarray(canvas, dtype=np.float32) / 255.0
     return torch.from_numpy(arr).reshape(1, 1, 28, 28)
 
 
