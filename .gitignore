@@ -1,0 +1,20 @@
+.venv/
+.python-version
+__pycache__/
+*.pyc
+.DS_Store
+mlruns/
+mlflow.db
+services/airflow/airflow.db
+services/airflow/airflow.db-shm
+services/airflow/airflow.db-wal
+services/airflow/airflow.cfg
+services/airflow/unittests.db
+services/airflow/*.generated
+services/airflow/logs/*
+!services/airflow/logs/.gitkeep
+data/processed/*.npz
+data/raw/
+notebooks/.ipynb_checkpoints/
+PMLDL Assignment 1_ Deployment.md
+Practical Machine Learning and Deep Learning. Lab 3. MLOps Tools.pdf

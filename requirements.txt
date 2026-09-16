@@ -1,0 +1,10 @@
+apache-airflow
+torch
+mlflow
+numpy
+fastapi
+uvicorn
+python-multipart
+pillow
+requests
+streamlit
